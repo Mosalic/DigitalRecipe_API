@@ -1,5 +1,6 @@
 <?php
 	header("Access-Control-Allow-Origin: *");
+	//header('Content-type: application/json');
 	//insert file
 	require "dbconnection.php";
 	
@@ -9,34 +10,31 @@
 	echo mysqli_result($result, 1);
 	
 	function mysqli_result($res, $row, $field=1) { 
-		echo 'Test funktion ';
+		//echo 'Test funktion ';
 		//$res->data_seek($row); 
-		$datarow = mysqli_fetch_all($res); 
+		$datarow = mysqli_fetch_all($res); //alle Daten aus der Datenbank holen
 		
+		
+		//Werte aus der Datenbank im Array einen Schlüssel zuweisen
 		for($i=0;$i<5;$i++){
-			echo '<br/>' . "Schleife " .$i .': ' ;
-			for($j=0;$j<3;$j++){
-				
-				echo $datarow[$i][$j] . ', ';
-			}
-		}
-		echo '<br/>';
-		
-		/*foreach($datarow as $data) {
-			echo $data;
-		}*/
-		
-		/*for($i=0; $i<$datarow.sizeOf(); $i++){
-			$res->data_seek($i);
-			$datarow = $res->fetch_array();
+			//echo '<br/>' . "Schleife " .$i .': ' ;
 			
-			foreach($datarow as $data){
-				//return $datarow[$field]; 
-				echo json_encode($data);
-			}
+			$data[$i] = [ 'id' => $datarow[$i][0], 'name' => $datarow[$i][1], 'password' => $datarow[$i][2] ];
+				// will encode to JSON object: {"name":"God","age":-1}  
+				// accessed as example in JavaScript like: result.name or result['name'] (returns "God")
+				
+			/*for($j=0;$j<3;$j++){
+				//echo $datarow[$i][$j] . ', ';
+			}*/
+		}
+		
+		/*echo "Alle id's: ";
+		foreach($data as $da){
+			echo $da['id'];
 		}*/
-		//echo "return JSON: " .json_encode($datarow);
-		return json_encode($datarow);
+		
+		return json_encode($data);
+		
 	}
 	
 	
