@@ -1,5 +1,5 @@
 <?php
-	header("Access-Control-Allow-Origin: *");
+	header("Access-Control-Allow-Origin: *");  //für axios.get Requests, schaltet CORS frei
 	//header('Content-type: application/json');
 	//insert file
 	require "dbconnection.php";
