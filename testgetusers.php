@@ -16,7 +16,7 @@
 		
 		
 		//Werte aus der Datenbank im Array einen Schlüssel zuweisen
-		for($i=0;$i<5;$i++){
+		for($i=0;$i<count($datarow);$i++){
 			//echo '<br/>' . "Schleife " .$i .': ' ;
 			
 			$data[$i] = [ 'id' => $datarow[$i][0], 'name' => $datarow[$i][1], 'password' => $datarow[$i][2] ];

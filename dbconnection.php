@@ -31,14 +31,4 @@
 		return $conLink;  //connected to database
 	
 	
-	//read all dataentries
-	/*function getAllEntries($connection){
-		$sqlStmt = "SELECT * FROM Users;";
-		$result = mysqli_query($connection, $sqlStmt);
-		§data = array();
-		
-		if($result = $connection->query($sqlStmt)){
-			
-		}
-	}*/
 ?>

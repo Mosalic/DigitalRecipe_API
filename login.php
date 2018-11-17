@@ -25,7 +25,7 @@
 		echo "ID: " . $user_id;
 	}else{
 		//Login Failed
-		//echo "Falscher Username oder falsches Passwort";
+		echo "Angaben bitte überprüfen";
 	}
 	
 	
