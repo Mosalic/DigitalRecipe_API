@@ -11,15 +11,19 @@
 	}
 	
 	
-	$user_name = $_POST["userName"]; //"userName", "neededMedicine" declaration in Recipe.js
+	$ver_number = $_POST["verNumber"]; //"verNumber", "neededMedicine" declaration in Recipe.js
 	$users_medicine = $_POST["neededMedicine"];
 	
-	
-	$mysql_qry = "INSERT INTO Recipes(patientName, medicine) VALUES('$user_name', '$users_medicine');"; //patientName, medicine are columnnames in database
+	if($ver_number != '' && $users_medicine != ''){
+		$mysql_qry = "INSERT INTO Rezepte(medikament_name, medikament_form, medikament_menge, versichertennummer_fk, LANR_fk) 
+							VALUES('$users_medicine', 'Tabletten', '30 Stück', '$ver_number', '0000000001');"; //patientName, medicine are columnnames in database
+	}else{
+		echo "Angaben: " . $ver_number . ", " . $users_medicine;
+	}
 	
 	
 	if($conLink->query($mysql_qry) === true){
-		echo "Rezept ausgestellt an: " . $user_name;
+		echo "Rezept ausgestellt an Patient mit Vers.Nummer: " . $ver_number;
 	}else{
 		echo "Error: " . $mysql_qry . "<br>" . $conLink->error ;
 	}

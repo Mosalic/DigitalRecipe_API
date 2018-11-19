@@ -4,7 +4,7 @@
 	//insert file
 	require "dbconnection.php";
 	
-	$mysql_qry = "SELECT * FROM Users;";
+	$mysql_qry = "SELECT * FROM Patienten;";
 	$result = mysqli_query($conLink, $mysql_qry);
 	
 	echo mysqli_result($result, 1);
@@ -19,7 +19,7 @@
 		for($i=0;$i<count($datarow);$i++){
 			//echo '<br/>' . "Schleife " .$i .': ' ;
 			
-			$data[$i] = [ 'id' => $datarow[$i][0], 'name' => $datarow[$i][1], 'password' => $datarow[$i][2] ];
+			$data[$i] = [ 'id' => $datarow[$i][0], 'name' => $datarow[$i][4], 'password' => $datarow[$i][5] ];
 				// will encode to JSON object: {"name":"God","age":-1}  
 				// accessed as example in JavaScript like: result.name or result['name'] (returns "God")
 				

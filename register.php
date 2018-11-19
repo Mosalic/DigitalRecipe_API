@@ -8,7 +8,7 @@
 	$user_password = $_POST["user_password"];
 	
 	// insert data
-	$mysql_qry = "INSERT INTO Users(username, password) VALUES('$user_name', '$user_password');";
+	$mysql_qry = "INSERT INTO Patienten(nutzername, passwort) VALUES('$user_name', '$user_password');";
 	
 	//
 	if($conLink->query($mysql_qry) === true){

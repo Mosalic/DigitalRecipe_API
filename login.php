@@ -11,18 +11,34 @@
 	
 	
 	$user_id;
+	$user_role = $_POST["userRole"]; //muss übergeben werden ob Anfrage vom Patient/App oder Arzt/Web kommt
 	$user_name = $_POST["userName"]; //"userName" and "userPassword" declaration in Android Studios BackgroundWorker-Class
 	$user_password = $_POST["userPassword"];
-	$mysql_qry = "SELECT id FROM Users WHERE username COLLATE Latin1_General_CS LIKE '$user_name' AND password COLLATE Latin1_General_CS LIKE '$user_password';";  //id is a column in the database, Collate beachtet GroßundKleinschreibung, muss auch in Datenbank gesetzt werden
-	$result = mysqli_query($conLink, $mysql_qry);
+	  
 	
+	//soll nur eine Klass für das Login in App und Web geben, hier muss differenziert werden, von wo die Anfrage kommt
+	if($user_role == "Patienten"){
+		//versichertennummer, nutzername und passwort are columns in the database, Collate beachtet GroßundKleinschreibung, muss auch in Datenbank gesetzt werden
+		$mysql_qry = "SELECT versichertennummer FROM $user_role WHERE nutzername COLLATE Latin1_General_CS LIKE '$user_name' AND passwort COLLATE Latin1_General_CS LIKE '$user_password';";
+	}else if($user_role == "Aerzte"){
+		//versichertennummer, nutzername und passwort are columns in the database, Collate beachtet GroßundKleinschreibung, muss auch in Datenbank gesetzt werden
+		$mysql_qry = "SELECT LANR FROM $user_role WHERE nutzername COLLATE Latin1_General_CS LIKE '$user_name' AND passwort COLLATE Latin1_General_CS LIKE '$user_password';";
+	}
+	
+	$result = mysqli_query($conLink, $mysql_qry);
 	
 	//check if User is in database
 	if(mysqli_num_rows($result) > 0 ){
 		//Login success
 		$row = mysqli_fetch_assoc($result);
-		$user_id =  $row['id'];
-		echo "ID: " . $user_id;
+		
+		if($user_role == "Patienten"){
+			$user_id =  $row['versichertennummer']; //versichertennummer ist spalte in database Patienten
+		}else if($user_role == "Aerzte"){
+			$user_id =  $row['LANR']; 
+		}
+		
+		echo $user_id;
 	}else{
 		//Login Failed
 		echo "Angaben bitte überprüfen";

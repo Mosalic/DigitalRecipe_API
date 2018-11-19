@@ -9,7 +9,7 @@
 		$dbServer = "localhost";
 		$dbUsername = "root";	//create account for other permissions and setting, root is default
 		$dbPassword = "";
-		$dbName = "digitalrecipe";
+		$dbName = "digitales_rezept";
 		
 		//Create connection
 		$conLink = mysqli_connect($dbServer, $dbUsername, $dbPassword, $dbName); 

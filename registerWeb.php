@@ -12,7 +12,7 @@
 	$user_name = $_POST["userName"]; //"userName" and "userPassword" declaration in React LoginComponent from the Parameter user
 	$user_password = $_POST["userPassword"];
 	
-	$mysql_require_qry = "SELECT * FROM Users WHERE username LIKE '$user_name';"; //fragt ab, ob es den username schon gibt
+	$mysql_require_qry = "SELECT * FROM Patienten WHERE nutzername LIKE '$user_name';"; //fragt ab, ob es den username schon gibt
 	$result_require = mysqli_query($conLink, $mysql_require_qry);
 	
 	//check if User is already in database
@@ -20,8 +20,10 @@
 		echo "Username: " .$user_name ." existiert bereits mit " .mysqli_num_rows($result_require);
 	}else{
 		// insert data
-		echo "Eintragen";
-		$mysql_qry = "INSERT INTO Users(username, password) VALUES('$user_name', '$user_password');";
+		if($user_name != '' && $user_password != ''){
+			echo "Eintragen";
+			$mysql_qry = "INSERT INTO Patienten VALUES('000000test', 'testnachname', 'testvorname', CURDATE() ,'$user_name', '$user_password', 'testkrankenkasse', 1);";	
+		}
 	
 		//
 		if($conLink->query($mysql_qry) === true){
