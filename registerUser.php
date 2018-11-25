@@ -37,7 +37,7 @@
 			if($user_role == "Patienten"){
 				echo "Rolle: " . $user_role;
 				//Datenformat für Tabelle Patienten
-				$mysql_qry = "INSERT INTO $user_role VALUES('000000patient', 'patientnachname', 'patientvorname', CURDATE() ,'$user_name', '$user_password', 'patientkrankenkasse', 1);";
+				$mysql_qry = "INSERT INTO $user_role VALUES('000000pati', 'patientnachname', 'patientvorname', CURDATE() ,'$user_name', '$user_password', 'patientkrankenkasse', 1);";
 			}else if($user_role == "Aerzte"){
 				echo "Rolle: " . $user_role;
 				//Datenformat für Tabelle Aerzte
