@@ -4,8 +4,8 @@
 	require "dbconnection.php";
 	
 	//$user_id = $_POST["user_id"]; //increase automatic, see database settings
-	$user_name = $_POST["user_name"]; //"user_name" and "user_password" declaration in Android Studios BackgroundWorker-Class
-	$user_password = $_POST["user_password"];
+	$user_name = $_POST["userName"]; //"userName" and "userPassword" declaration in Android Studios BackgroundWorker-Class
+	$user_password = $_POST["userPassword"];
 	
 	// insert data
 	$mysql_qry = "INSERT INTO Patienten(nutzername, passwort) VALUES('$user_name', '$user_password');";
