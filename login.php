@@ -43,14 +43,15 @@
 		
 		$data[0] = [ 'id' => $user_id, 'isUser' => true];
 		
-		echo json_encode($data);
+		
 		
 	}else{
-		//Login Failed
-		echo " Angaben bitte überprüfen";
+		//Login Failed, wrong inputs
+		$data[0] = ['id' => null, 'isUser' => false];
+		
 	}
 	
-	
+	echo json_encode($data); //return data to the app or webapp
 	
 	//close connection to database
 	$conLink-> close();
