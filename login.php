@@ -6,7 +6,7 @@
 	
 	//when json is postet $_POST is null and must decoded (from web app), android app posts not in json
 	if($_POST == null){
-		$_POST = json_decode(file_get_contents("php://input"),true); //JSON-Object von React muss umgewandelt werden, muss für Android noch abgefangen werden (kein json)
+		$_POST = json_decode(file_get_contents("php://input"),true); //JSON-Object von React muss umgewandelt werden, muss für Android noch abgefangen werden (kein json, vllt später auch json in App einfügen)
 	}
 	
 	
