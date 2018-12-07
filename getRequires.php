@@ -10,13 +10,26 @@
 		$_POST = json_decode(file_get_contents("php://input"),true); //JSON-Object von React muss umgewandelt werden, muss für Android noch abgefangen werden (kein json)
 	}
 	
+	$user_role = $_POST["userRole"]; //muss übergeben werden ob Anfrage vom Patient/App oder Arzt/Web kommt
 	$user_ID = $_POST["userID"];  //userID wurde von js mitgeschickt
 	//echo "API UserID: " . $user_ID;
 	
+	
+	
 	if($user_ID != ''){
-		$mysql_qry = "SELECT * FROM Anforderungen WHERE LANR_fk LIKE '$user_ID';";
+		
+		//soll nur eine Klass für App und Web geben, hier muss differenziert werden, von wo die Anfrage kommt
+		if($user_role == "Patienten"){
+			//versichertennummer, nutzername und passwort are columns in the database, Collate beachtet GroßundKleinschreibung, muss auch in Datenbank gesetzt werden
+			$mysql_qry = "SELECT * FROM Anforderungen WHERE versichertennummer_fk LIKE COLLATE Latin1_General_CS '$user_ID';";
+		}else if($user_role == "Aerzte"){
+			//versichertennummer, nutzername und passwort are columns in the database, Collate beachtet GroßundKleinschreibung, muss auch in Datenbank gesetzt werden
+			$mysql_qry = "SELECT * FROM Anforderungen WHERE LANR_fk LIKE '$user_ID';";
+		}
+		
 		$result = mysqli_query($conLink, $mysql_qry);
 		
+		//prüft ob es Anforderungen gibt
 		if(mysqli_num_rows($result) > 0 ){
 			echo mysqli_result($result, 1);
 		}else{
