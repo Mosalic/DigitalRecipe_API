@@ -20,8 +20,9 @@
 		
 		//soll nur eine Klass für App und Web geben, hier muss differenziert werden, von wo die Anfrage kommt
 		if($user_role == "Patienten"){
+			
 			//versichertennummer, nutzername und passwort are columns in the database, Collate beachtet GroßundKleinschreibung, muss auch in Datenbank gesetzt werden
-			$mysql_qry = "SELECT * FROM Anforderungen WHERE versichertennummer_fk LIKE COLLATE Latin1_General_CS '$user_ID';";
+			$mysql_qry = "SELECT * FROM Anforderungen WHERE versichertennummer_fk LIKE '$user_ID';";
 		}else if($user_role == "Aerzte"){
 			//versichertennummer, nutzername und passwort are columns in the database, Collate beachtet GroßundKleinschreibung, muss auch in Datenbank gesetzt werden
 			$mysql_qry = "SELECT * FROM Anforderungen WHERE LANR_fk LIKE '$user_ID';";
