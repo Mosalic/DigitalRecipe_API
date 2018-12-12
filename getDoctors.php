@@ -5,30 +5,29 @@
 	//insert file
 	require "dbconnection.php";
 	
+	
 	if($_POST == null){
 		
 		$_POST = json_decode(file_get_contents("php://input"),true); //JSON-Object von React muss umgewandelt werden, muss für Android noch abgefangen werden (kein json)
 	}
 	
+
 	$user_role = $_POST["userRole"]; //muss übergeben werden ob Anfrage vom Patient/App oder Arzt/Web kommt
-	$user_ID = $_POST["userID"];  //userID wurde von js mitgeschickt
+	//$user_ID = $_POST["userID"];  //userID wurde von js mitgeschickt
 	//echo "API UserID: " . $user_ID;
 	
 	
-	
-	if($user_ID != ''){
+	//if($user_ID != ''){
 		
 		//soll nur eine Klass für App und Web geben, hier muss differenziert werden, von wo die Anfrage kommt
 		if($user_role == "Patienten"){
-			
-			//versichertennummer, nutzername und passwort are columns in the database, Collate beachtet GroßundKleinschreibung, muss auch in Datenbank gesetzt werden
-			$mysql_qry = "SELECT * FROM Anforderungen WHERE versichertennummer_fk LIKE '$user_ID';";
+			$mysql_qry = "SELECT * FROM ( (Aerzte LEFT JOIN Betriebsstaetten ON betriebs_nummer_fk = betriebs_nummer) LEFT JOIN Adressen ON id_adresse_fk = id_adresse );";
 		}else if($user_role == "Aerzte"){
-			//versichertennummer, nutzername und passwort are columns in the database, Collate beachtet GroßundKleinschreibung, muss auch in Datenbank gesetzt werden
-			$mysql_qry = "SELECT * FROM Anforderungen WHERE LANR_fk LIKE '$user_ID';";
+			$mysql_qry = "SELECT * FROM Aerzte;"; //noch nicht in Gebrauch, vllt später
 		}
 		
 		$result = mysqli_query($conLink, $mysql_qry);
+		//print_r(mysqli_fetch_all($result));
 		
 		//prüft ob es Anforderungen gibt
 		if(mysqli_num_rows($result) > 0 ){
@@ -38,38 +37,29 @@
 		}
 		
 		
-	}
+	//}
+	
 	
 	function mysqli_result($res) { 
 			//echo 'Test funktion ';
 			//$res->data_seek($row); 
 			$datarow = mysqli_fetch_all($res); //alle Daten aus der Datenbank holen
-			
+			//print_r($datarow);
 			
 			//Werte aus der Datenbank im Array einen Schlüssel zuweisen
 			for($i=0;$i<count($datarow);$i++){
 				//echo '<br/>' . "Schleife " .$i .': ' ;
+				//echo $i . ": " . count($datarow[$i]) . " "; //stand 11.12. werden 18 Parameter ausgegeben
+				//echo $datarow[$i][1] ." ";
 				
-				$data[$i] = [ 'id' => $datarow[$i][0], 'beschwerden' => $datarow[$i][1], 'med_name' => $datarow[$i][2], 'ver_nummer' => $datarow[$i][3], 'LANR_fk' => $datarow[$i][4] ];
-					// will encode to JSON object: {"name":"God","age":-1}  
-					// accessed as example in JavaScript like: result.name or result['name'] (returns "God")
+				$data[$i] = [ 'id_LANR' => $datarow[$i][0],'doc_lastName' => "musterNachname", /*'doc_lastName' => $datarow[$i][1],*/ 'doc_firstName' => $datarow[$i][2], 'doc_title' => $datarow[$i][3], 'doc_office_nr' => $datarow[$i][8], 'doc_office_name' => "musterPraxisname",/*'doc_office_name' => $datarow[$i][9],*/ 'office_phone' => $datarow[$i][10], 'id_adress' => $datarow[$i][12], 'adress_street' => "musterStrasse",/* 'adress_street' => $datarow[$i][13],*/ 'adress_street_nr' => $datarow[$i][14], 'adress_PLZ' => $datarow[$i][16], 'adress_city' => $datarow[$i][17] ];
 					
-				/*for($j=0;$j<3;$j++){
-					//echo $datarow[$i][$j] . ', ';
-				}*/
 			}
 			
-			/*echo "Alle id's: ";
-			foreach($data as $da){
-				echo $da['id'];
-			}*/
 			
 			return json_encode($data);
 			
 		}
-	
-	
-	
 	
 	
 	//close connection to database
