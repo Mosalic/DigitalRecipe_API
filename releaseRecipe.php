@@ -13,10 +13,11 @@
 	
 	$ver_number = $_POST["verNumber"]; //"verNumber", "neededMedicine" declaration in Recipe.js
 	$users_medicine = $_POST["neededMedicine"];
+	$user_ID = $_POST["userID"];  //userID wurde von js mitgeschickt
 	
 	if($ver_number != '' && $users_medicine != ''){
 		$mysql_qry = "INSERT INTO Rezepte(medikament_name, medikament_form, medikament_menge, versichertennummer_fk, LANR_fk) 
-							VALUES('$users_medicine', 'Tabletten', '30 Stück', '$ver_number', '0000000001');"; //patientName, medicine are columnnames in database
+							VALUES('$users_medicine', 'Tabletten', '30 Stück', '$ver_number', '$user_ID');"; //patientName, medicine are columnnames in database
 	}else{
 		echo "Angaben: " . $ver_number . ", " . $users_medicine;
 	}
