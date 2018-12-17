@@ -61,6 +61,7 @@
 				//echo $i . ": " . count($datarow[$i]) . " "; //stand 11.12. werden 18 Parameter ausgegeben
 				//echo $datarow[$i][1] ." ";
 				
+				//noch Abfragen welche Werte zurückkommen (siehe oben, mehrere SQLBefehle)
 				$data[$i] = [ 'id_verNr' => $datarow[$i][0],'user_lastName' => "musterNachname", /*'user_lastName' => $datarow[$i][1],*/ 'user_firstName' => $datarow[$i][2], 'user_geb' => $datarow[$i][3], 'user_username' => $datarow[$i][4], 'user_ver' => "musterVersicherung",/*'user_ver' => $datarow[$i][6],*/ 'id_adress' => $datarow[$i][8], 'adress_street' => "musterStrasse",/* 'adress_street' => $datarow[$i][9],*/ 'adress_street_nr' => $datarow[$i][10], 'adress_PLZ' => $datarow[$i][12], 'adress_city' => $datarow[$i][13] ];
 					
 			}

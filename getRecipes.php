@@ -25,14 +25,15 @@
 			$mysql_qry = "SELECT * FROM Rezepte WHERE versichertennummer_fk LIKE '$user_ID';";
 		}else if($user_role == "Aerzte"){
 			//versichertennummer, nutzername und passwort are columns in the database, Collate beachtet GroßundKleinschreibung, muss auch in Datenbank gesetzt werden
-			$mysql_qry = "SELECT * FROM Rezepte WHERE LANR_fk LIKE '$user_ID';";
+			//$mysql_qry = "SELECT * FROM Rezepte WHERE LANR_fk LIKE '$user_ID';";
+			$mysql_qry = "SELECT * FROM ( Rezepte LEFT JOIN Patienten ON versichertennummer_fk = versichertennummer ) WHERE LANR_fk LIKE '$user_ID';";
 		}
 		
 		$result = mysqli_query($conLink, $mysql_qry);
 		
 		//prüft ob es Anforderungen gibt
 		if(mysqli_num_rows($result) > 0 ){
-			echo mysqli_result($result, 1);
+			echo mysqli_result($result, $user_role);
 		}else{
 			echo "Keine Angaben enthalten";
 		}
@@ -41,7 +42,7 @@
 	}
 	
 	
-	function mysqli_result($res, $row, $field=1) { 
+	function mysqli_result($res, $userRole) { 
 			//echo 'Test funktion ';
 			//$res->data_seek($row); 
 			$datarow = mysqli_fetch_all($res); //alle Daten aus der Datenbank holen
@@ -50,8 +51,12 @@
 			//Werte aus der Datenbank im Array einen Schlüssel zuweisen
 			for($i=0;$i<count($datarow);$i++){
 				//echo '<br/>' . "Schleife " .$i .': ' ;
+				if($userRole == "Patienten"){
+					$data[$i] = [ 'id' => $datarow[$i][0], 'med_name' => $datarow[$i][1], 'med_form' => $datarow[$i][2], 'med_menge' => $datarow[$i][3], 'ver_nummer' => $datarow[$i][9], 'LANR_fk' => $datarow[$i][10] ];
+				}else if($userRole == "Aerzte"){
+					$data[$i] = [ 'id' => $datarow[$i][0], 'med_name' => $datarow[$i][1], 'med_form' => $datarow[$i][2], 'med_menge' => $datarow[$i][3], 'ver_nummer' => $datarow[$i][9], 'LANR_fk' => $datarow[$i][10], 'pat_lastName' => $datarow[$i][12], 'pat_firstName' => $datarow[$i][13] ];
+				}
 				
-				$data[$i] = [ 'id' => $datarow[$i][0], 'med_name' => $datarow[$i][1], 'med_form' => $datarow[$i][2], 'med_menge' => $datarow[$i][3], 'ver_nummer' => $datarow[$i][9], 'LANR_fk' => $datarow[$i][10] ];
 					
 			}
 			

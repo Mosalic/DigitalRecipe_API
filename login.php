@@ -20,11 +20,14 @@
 	if($user_role == "Patienten"){
 		
 		//versichertennummer, nutzername und passwort are columns in the database, Collate beachtet GroßundKleinschreibung, muss auch in Datenbank gesetzt werden
-		$mysql_qry = "SELECT versichertennummer FROM $user_role WHERE nutzername COLLATE Latin1_General_CS LIKE '$user_name' AND passwort COLLATE Latin1_General_CS LIKE '$user_password';";
+		//$mysql_qry = "SELECT versichertennummer FROM $user_role WHERE nutzername COLLATE Latin1_General_CS LIKE '$user_name' AND passwort COLLATE Latin1_General_CS LIKE '$user_password';";
+		$mysql_qry = "SELECT versichertennummer FROM ($user_role LEFT JOIN Login ON id_login_fk = id_login) WHERE username COLLATE Latin1_General_CS LIKE '$user_name' AND password COLLATE Latin1_General_CS LIKE '$user_password'  AND userrole COLLATE Latin1_General_CS LIKE '$user_role';";
+			
 	}else if($user_role == "Aerzte"){
 		
 		//versichertennummer, nutzername und passwort are columns in the database, Collate beachtet GroßundKleinschreibung, muss auch in Datenbank gesetzt werden
-		$mysql_qry = "SELECT LANR FROM $user_role WHERE nutzername COLLATE Latin1_General_CS LIKE '$user_name' AND passwort COLLATE Latin1_General_CS LIKE '$user_password';";
+		//$mysql_qry = "SELECT LANR FROM $user_role WHERE nutzername COLLATE Latin1_General_CS LIKE '$user_name' AND passwort COLLATE Latin1_General_CS LIKE '$user_password';";
+		$mysql_qry = "SELECT LANR FROM ($user_role LEFT JOIN Login ON id_login_fk = id_login) WHERE username COLLATE Latin1_General_CS LIKE '$user_name' AND password COLLATE Latin1_General_CS LIKE '$user_password'  AND userrole COLLATE Latin1_General_CS LIKE '$user_role';";
 	}
 	
 	$result = mysqli_query($conLink, $mysql_qry);
