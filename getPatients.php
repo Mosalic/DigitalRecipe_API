@@ -21,9 +21,9 @@
 		
 		//soll nur eine Klass für App und Web geben, hier muss differenziert werden, von wo die Anfrage kommt
 		if($user_role == "Patienten"){
-			$mysql_qry = "SELECT * FROM (Patienten LEFT JOIN Adressen ON id_adresse_fk = id_adresse) WHERE versichertennummer COLLATE Latin1_General_CS LIKE '$user_ID';"; 
+			$mysql_qry = "SELECT * FROM Patienten LEFT JOIN Adressen ON id_adresse_fk = id_adresse LEFT JOIN Login ON id_login_fk = id_login WHERE versichertennummer COLLATE Latin1_General_CS LIKE '$user_ID';"; 
 		}else if($user_role == "Aerzte"){
-			
+			//wird noch nicht gebraucht
 			$mysql_qry = "SELECT * FROM ( Patienten LEFT JOIN Adressen ON id_adresse_fk = id_adresse ) WHERE versichertennummer COLLATE Latin1_General_CS LIKE '$user_ID';";
 		}
 		
@@ -31,9 +31,10 @@
 	}else{
 		//wenn keine ID übergeben wird dann alle Patienten anzeigen, nicht nur die mit der ID
 		if($user_role == "Patienten"){
+			//wird noch nicht gebraucht
 			$mysql_qry = "SELECT * FROM (Patienten LEFT JOIN Adressen ON id_adresse_fk = id_adresse);"; 
 		}else if($user_role == "Aerzte"){
-			
+			//wird noch nicht gebraucht
 			$mysql_qry = "SELECT * FROM ( Patienten LEFT JOIN Adressen ON id_adresse_fk = id_adresse );";
 		}
 	}
@@ -62,7 +63,7 @@
 				//echo $datarow[$i][1] ." ";
 				
 				//noch Abfragen welche Werte zurückkommen (siehe oben, mehrere SQLBefehle)
-				$data[$i] = [ 'id_verNr' => $datarow[$i][0],'user_lastName' => "musterNachname", /*'user_lastName' => $datarow[$i][1],*/ 'user_firstName' => $datarow[$i][2], 'user_geb' => $datarow[$i][3], 'user_username' => $datarow[$i][4], 'user_ver' => "musterVersicherung",/*'user_ver' => $datarow[$i][6],*/ 'id_adress' => $datarow[$i][8], 'adress_street' => "musterStrasse",/* 'adress_street' => $datarow[$i][9],*/ 'adress_street_nr' => $datarow[$i][10], 'adress_PLZ' => $datarow[$i][12], 'adress_city' => $datarow[$i][13] ];
+				$data[$i] = [ 'id_verNr' => $datarow[$i][0],'user_lastName' => "musterNachname", /*'user_lastName' => $datarow[$i][1],*/ 'user_firstName' => $datarow[$i][2], 'user_geb' => $datarow[$i][3], /*'user_username' => $datarow[$i][4],*/ 'user_ver' => "musterVersicherung",/*'user_ver' => $datarow[$i][4],*/ 'id_adress' => $datarow[$i][7], 'adress_street' => "musterStrasse",/* 'adress_street' => $datarow[$i][8],*/ 'adress_street_nr' => $datarow[$i][9], 'adress_PLZ' => $datarow[$i][11], 'adress_city' => $datarow[$i][12], 'user_username' => $datarow[$i][14] ];
 					
 			}
 			

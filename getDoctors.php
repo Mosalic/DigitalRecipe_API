@@ -13,15 +13,17 @@
 	
 
 	$user_role = $_POST["userRole"]; //muss übergeben werden ob Anfrage vom Patient/App oder Arzt/Web kommt
-	$user_ID = $_POST["userID"];  //userID wurde von js mitgeschickt
+	$user_ID = $_POST["userID"];  //userID wurde von js mitgeschickt, ist null wenn es keine ID gibt
 	//echo "API UserID: " . $user_ID;
 	
 	
-	if($user_ID != ''){
-		
+	if($user_ID != '' && $user_ID != 0){
+		//echo "TEst if";
 		//soll nur eine Klass für App und Web geben, hier muss differenziert werden, von wo die Anfrage kommt
 		if($user_role == "Patienten"){
-			$mysql_qry = "SELECT * FROM ( (Aerzte LEFT JOIN Betriebsstaetten ON betriebs_nummer_fk = betriebs_nummer) LEFT JOIN Adressen ON id_adresse_fk = id_adresse );";
+			
+			//tritt im Moment nicht auf Stand 17.12.2018
+			//$mysql_qry = "SELECT * FROM ( (Aerzte LEFT JOIN Betriebsstaetten ON betriebs_nummer_fk = betriebs_nummer) LEFT JOIN Adressen ON id_adresse_fk = id_adresse );";
 			
 		}else if($user_role == "Aerzte"){
 			
@@ -30,9 +32,11 @@
 		}
 	
 	}else{
+		//echo "TEst else";
 		//wenn keine ID übergeben wird dann alle Patienten anzeigen, nicht nur die mit der ID
 		if($user_role == "Patienten"){
-			$mysql_qry = "SELECT * FROM (Aerzte LEFT JOIN Betriebsstaetten ON betriebs_nummer_fk = betriebs_nummer);"; 
+			//$mysql_qry = "SELECT * FROM (Aerzte LEFT JOIN Betriebsstaetten ON betriebs_nummer_fk = betriebs_nummer);"; 
+			$mysql_qry = "SELECT * FROM ( (Aerzte LEFT JOIN Betriebsstaetten ON betriebs_nummer_fk = betriebs_nummer) LEFT JOIN Adressen ON id_adresse_fk = id_adresse );";
 		}else if($user_role == "Aerzte"){
 			$mysql_qry = "SELECT * FROM ( Aerzte LEFT JOIN Betriebsstaetten ON betriebs_nummer_fk = betriebs_nummer);";
 		}
@@ -61,7 +65,7 @@
 				//echo $i . ": " . count($datarow[$i]) . " "; //stand 11.12. werden 18 Parameter ausgegeben
 				//echo $datarow[$i][1] ." ";
 				
-				if($userID != ''){
+				if($userID != '' && $userID != 0){
 		
 					//soll nur eine Klass für App und Web geben, hier muss differenziert werden, von wo die Anfrage kommt
 					if($userRole == "Patienten"){
@@ -76,6 +80,8 @@
 					//wenn keine ID übergeben wird dann alle Patienten anzeigen, nicht nur die mit der ID
 					if($userRole == "Patienten"){
 						//muss noch deklariert werden
+						$data[$i] = [ 'id_LANR' => $datarow[$i][0],'doc_lastName' => "musterNachname", /*'doc_lastName' => $datarow[$i][1],*/ 'doc_firstName' => $datarow[$i][2], 'doc_title' => $datarow[$i][3], 'doc_office_nr' => $datarow[$i][7], 'doc_office_name' => "musterPraxisname",/*'doc_office_name' => $datarow[$i][8],*/ 'office_phone' => $datarow[$i][9], 'id_adress' => $datarow[$i][11], 'adress_street' => "musterStrasse",/* 'adress_street' => $datarow[$i][12],*/ 'adress_street_nr' => $datarow[$i][13], 'adress_PLZ' => $datarow[$i][15], 'adress_city' => $datarow[$i][16] ];
+
 					}else if($userRole == "Aerzte"){
 						//muss noch deklariert werden
 					}
