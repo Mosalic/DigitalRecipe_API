@@ -55,25 +55,25 @@
 				
 				if($userRole == "Patienten"){
 					$data[$i] = [ 'id' => $datarow[$i][0], 'beschwerden' => $datarow[$i][1], 'med_name' => $datarow[$i][2], 'ver_nummer' => $datarow[$i][3], 'LANR_fk' => $datarow[$i][4], 'id_rezept_fk' => $datarow[$i][5], 'zugelassen' => $datarow[$i][6], 'doc_lastName' => $datarow[$i][8], 'doc_firstName' => $datarow[$i][9], 'doc_title' => $datarow[$i][10] ];
+					$data[$i] = array_map('htmlentities', $data[$i]); //solution for problem with öäü
 					// will encode to JSON object: {"name":"God","age":-1}  
 					// accessed as example in JavaScript like: result.name or result['name'] (returns "God")
-					
-				/*for($j=0;$j<3;$j++){
-					//echo $datarow[$i][$j] . ', ';
-				}*/
+						
+				
 				}else if($userRole == "Aerzte"){
 					$data[$i] = [ 'id' => $datarow[$i][0], 'beschwerden' => $datarow[$i][1], 'med_name' => $datarow[$i][2], 'ver_nummer' => $datarow[$i][3], 'LANR_fk' => $datarow[$i][4], 'id_rezept_fk' => $datarow[$i][5], 'zugelassen' => $datarow[$i][6], 'pat_lastName' => $datarow[$i][8], 'pat_firstName' => $datarow[$i][9] ];
 				}
 				
-				
 			}
 			
-			/*echo "Alle id's: ";
-			foreach($data as $da){
-				echo $da['id'];
-			}*/
-			
-			return json_encode($data);
+		
+			if($userRole == "Patienten"){
+				//test UTF8, wegen Porbleme mit öäü http://www.php.net/manual/en/function.json-encode.php
+				$json_data = html_entity_decode(json_encode($data));
+				return $json_data; //json_encode($data);
+			}else if($userRole == "Aerzte"){
+				return json_encode($data);
+			}
 			
 		}
 	

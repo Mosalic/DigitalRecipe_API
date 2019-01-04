@@ -60,6 +60,7 @@
 					/*$data[$i] = [ 'id_recipe' => $datarow[$i][0], 'med_name' => $datarow[$i][1], 'med_form' => $datarow[$i][2], 'med_menge' => $datarow[$i][3], 'med_datum' => $datarow[$i][5], 'noctu' => $datarow[$i][6],
 								'ver_nummer' => $datarow[$i][9], 'LANR_fk' => $datarow[$i][10], 'pat_lastName' => $datarow[$i][12], 'pat_firstName' => $datarow[$i][13], 'pat_geb' => $datarow[$i][14],
 								'pat_insurance' => $datarow[$i][15], 'adress_id' => $datarow[$i][18], 'adress_street' => $datarow[$i][19], 'adress_street_nr' => $datarow[$i][20], 'adress_PLZ' => $datarow[$i][22], 'adress_city' => $datarow[$i][23] ];*/
+					$data[$i] = array_map('htmlentities', $data[$i]); //solution for problem with öäü
 				}else if($userRole == "Aerzte"){
 					$data[$i] = [ 'id' => $datarow[$i][0], 'med_name' => $datarow[$i][1], 'med_form' => $datarow[$i][2], 'med_menge' => $datarow[$i][3], 'ver_nummer' => $datarow[$i][9], 'LANR_fk' => $datarow[$i][10], 'pat_lastName' => $datarow[$i][12], 'pat_firstName' => $datarow[$i][13] ];
 				}
@@ -68,7 +69,13 @@
 			}
 			
 			
-			return json_encode($data);
+			if($userRole == "Patienten"){
+				//test UTF8, wegen Porbleme mit öäü http://www.php.net/manual/en/function.json-encode.php
+				$json_data = html_entity_decode(json_encode($data));
+				return $json_data; //json_encode($data);
+			}else if($userRole == "Aerzte"){
+				return json_encode($data);
+			}
 			
 		}
 	

@@ -23,14 +23,15 @@
 	
 	if($conLink->query($mysql_qry) === true){
 		//echo "Anforderung erstellt von Patient: " . $ver_number;
-		$data[0] = [ 'info' => "createNewRequire"];
+		$data[0] = ['info' => "createNewRequire",'doc_lastName' => "musterNachname"];
 		//echo $data[0]['info'];
+		return json_encode($data);
 		
 	}else{
 		echo "Error: " . $mysql_qry . "<br>" . $conLink->error ;
 	}
 	
-	return json_encode($data);
+	
 		
 	//close connection to database
 	$conLink-> close();
