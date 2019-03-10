@@ -1,0 +1,7 @@
+https://stackoverflow.com/questions/42061727/cors-error-request-header-field-authorization-is-not-allowed-by-access-control/45254406
+http://php.net/manual/en/function.header.php
+https://www.w3schools.com/sql/sql_join_inner.asp
+https://stackoverflow.com/questions/13602075/problems-with-german-umlauts-in-php-json-encode
+https://stackoverflow.com/questions/7383753/is-it-possible-to-use-the-same-table-twice-in-a-select-query
+http://www.php.net/manual/en/function.json-encode.php
+Buch: Florence Maurice, 2010, PHP 5.3 + MySQL 5.1, Der Einstieg in die Programmierung dynamischer Websites
