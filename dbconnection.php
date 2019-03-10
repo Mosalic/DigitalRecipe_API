@@ -14,13 +14,6 @@
 		//Create connection
 		$conLink = mysqli_connect($dbServer, $dbUsername, $dbPassword, $dbName); 
 		
-		/* //Status Meldung zum test über localhost/android_connect/login.php
-		if(!$conLink){
-			//die("Connection failed: " . mysqli_error());
-			echo "Connections failed";
-		}else{
-			echo "Connection success ";
-		}*/
 		
 		//Check connection
 		if(mysqli_connect_errno()){

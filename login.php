@@ -1,32 +1,30 @@
 <?php
-	header("Access-Control-Allow-Origin: *"); //für get
-	header('Access-Control-Allow-Headers: Content-Type'); //für axios.post Requests, schaltet CORS frei
+	//CORS settings
+	header("Access-Control-Allow-Origin: *"); 
+	header('Access-Control-Allow-Headers: Content-Type'); 
 	//insert file
 	require "dbconnection.php";
 	
 	//when json is postet $_POST is null and must decoded (from web app), android app posts not in json
 	if($_POST == null){
-		$_POST = json_decode(file_get_contents("php://input"),true); //JSON-Object von React muss umgewandelt werden, muss für Android noch abgefangen werden (kein json, vllt später auch json in App einfügen)
+		$_POST = json_decode(file_get_contents("php://input"),true); 
 	}
 	
 	
 	$user_id;
-	$user_role = $_POST["userRole"]; //muss übergeben werden ob Anfrage vom Patient/App oder Arzt/Web kommt
-	$user_name = $_POST["userName"]; //"userName" and "userPassword" declaration in Android Studios BackgroundWorker-Class
+	//get data from JSON
+	$user_role = $_POST["userRole"]; 
+	$user_name = $_POST["userName"]; 
 	$user_password = $_POST["userPassword"];
 	  
 	
-	//soll nur eine Klass für das Login in App und Web geben, hier muss differenziert werden, von wo die Anfrage kommt
+	
 	if($user_role == "Patienten"){
 		
-		//versichertennummer, nutzername und passwort are columns in the database, Collate beachtet GroßundKleinschreibung, muss auch in Datenbank gesetzt werden
-		//$mysql_qry = "SELECT versichertennummer FROM $user_role WHERE nutzername COLLATE Latin1_General_CS LIKE '$user_name' AND passwort COLLATE Latin1_General_CS LIKE '$user_password';";
 		$mysql_qry = "SELECT versichertennummer FROM ($user_role LEFT JOIN Login ON id_login_fk = id_login) WHERE username COLLATE Latin1_General_CS LIKE '$user_name' AND password COLLATE Latin1_General_CS LIKE '$user_password'  AND userrole COLLATE Latin1_General_CS LIKE '$user_role';";
 			
 	}else if($user_role == "Aerzte"){
 		
-		//versichertennummer, nutzername und passwort are columns in the database, Collate beachtet GroßundKleinschreibung, muss auch in Datenbank gesetzt werden
-		//$mysql_qry = "SELECT LANR FROM $user_role WHERE nutzername COLLATE Latin1_General_CS LIKE '$user_name' AND passwort COLLATE Latin1_General_CS LIKE '$user_password';";
 		$mysql_qry = "SELECT LANR FROM ($user_role LEFT JOIN Login ON id_login_fk = id_login) WHERE username COLLATE Latin1_General_CS LIKE '$user_name' AND password COLLATE Latin1_General_CS LIKE '$user_password'  AND userrole COLLATE Latin1_General_CS LIKE '$user_role';";
 	}
 	
@@ -39,7 +37,7 @@
 		$row = mysqli_fetch_assoc($result);
 		
 		if($user_role == "Patienten"){
-			$user_id =  $row['versichertennummer']; //versichertennummer ist spalte in database Patienten
+			$user_id =  $row['versichertennummer']; 
 		}else if($user_role == "Aerzte"){
 			$user_id =  $row['LANR']; 
 		}
